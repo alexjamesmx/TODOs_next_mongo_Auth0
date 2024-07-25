@@ -1,4 +1,4 @@
-import mongoose from "mongoose"
+import mongoose from "mongoose";
 
 const TodoSchema = new mongoose.Schema({
   title: {
@@ -8,8 +8,13 @@ const TodoSchema = new mongoose.Schema({
   },
   description: {
     type: String,
-    maxlength: [60, "Description specified cannot be more than 60 characters"],
+    maxlength: [60, "Description cannot be more than 60 characters"],
   },
-})
+});
 
-export default mongoose.models.Todo || mongoose.model("Todo", TodoSchema)
+// Check if the model already exists before defining it
+const Todo =
+  (mongoose.models && mongoose.models.Todo) ||
+  mongoose.model("Todo", TodoSchema);
+
+export default Todo;

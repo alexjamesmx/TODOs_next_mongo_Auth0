@@ -1,24 +1,24 @@
-import { useState } from "react"
-import { useRouter } from "next/router"
-import { mutate } from "swr"
-import Link from "next/link"
-import { BsBoxArrowInUpLeft } from "react-icons/bs"
-import { withApiAuthRequired } from "@auth0/nextjs-auth0"
+import { useState } from "react";
+import { useRouter } from "next/router";
+import { mutate } from "swr";
+import Link from "next/link";
+import { BsBoxArrowInUpLeft } from "react-icons/bs";
+import { withApiAuthRequired } from "@auth0/nextjs-auth0";
 
 const Form = ({ formId, todoForm, forNewTodo = true }) => {
-  const router = useRouter()
-  const contentType = "application/json"
-  const [errors, setErrors] = useState({})
-  const [message, setMessage] = useState("")
+  const router = useRouter();
+  const contentType = "application/json";
+  const [errors, setErrors] = useState({});
+  const [message, setMessage] = useState("");
 
   const [form, setForm] = useState({
     id: todoForm.id,
     title: todoForm.title,
     description: todoForm.description,
-  })
+  });
 
   const putData = async (form) => {
-    const { id } = router.query
+    const { id } = router.query;
 
     try {
       const res = await fetch(`/api/todos/${id}`, {
@@ -28,22 +28,22 @@ const Form = ({ formId, todoForm, forNewTodo = true }) => {
           "Content-Type": contentType,
         },
         body: JSON.stringify(form),
-      })
+      });
 
       if (!res.ok) {
-        throw new Error(res.status)
+        throw new Error(res.status);
       }
 
-      const { data } = await res.json()
+      const { data } = await res.json();
 
-      mutate(`/api/todos/${id}`, data, false)
-      router.push("/todos")
+      mutate(`/api/todos/${id}`, data, false);
+      router.push("/todos");
     } catch (error) {
-      setMessage("Failed to update todo")
+      setMessage("Failed to update todo");
     }
-  }
+  };
 
-  const postData = withApiAuthRequired(async (form) => {
+  const postData = async (form) => {
     try {
       const res = await fetch("/api/todos", {
         method: "POST",
@@ -52,39 +52,39 @@ const Form = ({ formId, todoForm, forNewTodo = true }) => {
           "Content-Type": contentType,
         },
         body: JSON.stringify(form),
-      })
+      });
 
       if (!res.ok) {
-        throw new Error(res.status)
+        throw new Error(res.status);
       }
 
-      router.push("/todos")
+      router.push("/todos");
     } catch (error) {
-      setMessage("Failed to add todo")
+      setMessage("Failed to add todo");
     }
-  })
+  };
   const onChange = (e) => {
     setForm({
       ...form,
       [e.target.name]: e.target.value,
-    })
-  }
+    });
+  };
 
   const onSubmit = (e) => {
-    e.preventDefault()
-    const errs = formValidate()
+    e.preventDefault();
+    const errs = formValidate();
     if (Object.keys(errs).length === 0) {
-      forNewTodo ? postData(form) : putData(form)
+      forNewTodo ? postData(form) : putData(form);
     } else {
-      setErrors({ errs })
+      setErrors({ errs });
     }
-  }
+  };
 
   const formValidate = () => {
-    let err = {}
-    if (!form.title) err.title = "Title is required"
-    return err
-  }
+    let err = {};
+    if (!form.title) err.title = "Title is required";
+    return err;
+  };
 
   return (
     <>
@@ -144,7 +144,7 @@ const Form = ({ formId, todoForm, forNewTodo = true }) => {
         ))}
       </div>
     </>
-  )
-}
+  );
+};
 
-export default Form
+export default Form;
