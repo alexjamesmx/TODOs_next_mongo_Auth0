@@ -1,15 +1,15 @@
-import dbConnect from "../lib/dbConnect"
-import Todo from "../models/Todo"
+import dbConnect from "../lib/dbConnect";
+import Todo from "../models/Todo";
 
 const Index = () => (
   <>
     {/* Create a card for each todo */}
     <div className="flex flex-col items-center justify-center h-screen ">
       <h1 className="text-6xl font-bold mb-8 text-white">
-        Welcome to TODO App
+        Welcome to TODO App by Alexjamesmx
       </h1>
       <p className="text-xl text-center mb-12 text-white">
-        Manage your tasks efficiently and stay organized with our TODO App.
+        Manage your tasks efficiently and stay organized.
       </p>
       <img
         src="/images/tasks.png"
@@ -24,7 +24,6 @@ const Index = () => (
       </p>
     </div>
   </>
-)
+);
 
-
-export default Index
+export default Index;
